@@ -1,8 +1,8 @@
 {
   "$schema": "https://www.raycast.com/schemas/extension.json",
   "name": "discogs",
-  "title": "discogs",
-  "description": "Find music on Discogs",
+  "title": "Discogs Database Search",
+  "description": "Search vinyl records in the Discogs database",
   "icon": "command-icon.png",
   "author": "vigosan",
   "categories": [
@@ -12,8 +12,8 @@
   "commands": [
     {
       "name": "index",
-      "title": "Discogs",
-      "description": "Find music on Discogs",
+      "title": "Search",
+      "description": "Search vinyl records in the Discogs database",
       "mode": "view"
     }
   ],
@@ -23,7 +23,7 @@
       "type": "password",
       "required": true,
       "title": "Personal Access Token",
-      "description": "View extension's README for instructions.",
+      "description": "Your Discogs Personal Access Token. View the README for instructions.",
       "placeholder": "a1b2...c3d4"
     }
   ],
