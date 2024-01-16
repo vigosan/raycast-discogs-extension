@@ -8,30 +8,43 @@ import {
   openExtensionPreferences,
 } from "@raycast/api";
 import { useFetch } from "@raycast/utils";
-import { ApiResponse } from "./types";
+import { ApiResponse, RaycastExtPreferences } from "./types";
+
+const DISCOGS_API_URL = "https://api.discogs.com";
+const DISCOGS_WEB_URL = "https://discogs.com";
+
+const MissingPATScreen = () => {
+  const markdown =
+    "Missing Personal Access Token. Please update your extension preferences and try again.";
+
+  return (
+    <Detail
+      markdown={markdown}
+      actions={
+        <ActionPanel>
+          <Action
+            title="Open Extension Preferences"
+            onAction={openExtensionPreferences}
+          />
+        </ActionPanel>
+      }
+    />
+  );
+};
+
+const getApiUrl = (searchText: string, token: string) =>
+  `${DISCOGS_API_URL}/database/search?q=${searchText}&format=Vinyl&token=${token}`;
 
 export default function Command() {
-  const { token } = getPreferenceValues();
+  const { token } = getPreferenceValues<RaycastExtPreferences>();
   const [searchText, setSearchText] = useState("");
   const { data, isLoading } = useFetch<ApiResponse>(
-    `https://api.discogs.com/database/search?q=${searchText}&format=Vinyl&per_page=8&token=${token}`,
+    getApiUrl(searchText, token),
     { keepPreviousData: true },
   );
 
   if (!token) {
-    return (
-      <Detail
-        markdown="PAT key incorrect. Please update it in extension preferences and try again."
-        actions={
-          <ActionPanel>
-            <Action
-              title="Open Extension Preferences"
-              onAction={openExtensionPreferences}
-            />
-          </ActionPanel>
-        }
-      />
-    );
+    return <MissingPATScreen />;
   }
 
   return (
@@ -42,7 +55,7 @@ export default function Command() {
       throttle
       filtering={false}
     >
-      {searchText === "" ? (
+      {!searchText.trim() ? (
         <List.EmptyView title="Type something to get started" />
       ) : (
         (data?.results || []).map((item) => (
@@ -60,7 +73,7 @@ export default function Command() {
             ]}
             actions={
               <ActionPanel>
-                <Action.OpenInBrowser url={`https://discogs.com${item.uri}`} />
+                <Action.OpenInBrowser url={`${DISCOGS_WEB_URL}${item.uri}`} />
               </ActionPanel>
             }
           />

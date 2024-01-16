@@ -1,9 +1,14 @@
+export interface RaycastExtPreferences {
+  token: string;
+  twosToken: string;
+}
+
 export interface ApiResponse {
   pagination: Pagination;
   results: Result[];
 }
 
-export interface Pagination {
+interface Pagination {
   page: number;
   pages: number;
   per_page: number;
@@ -17,7 +22,7 @@ interface Format {
   descriptions: string[];
 }
 
-export interface Result {
+interface Result {
   country: string;
   year: string;
   format: string[];
@@ -40,12 +45,12 @@ export interface Result {
   formats: Format[]
 }
 
-export interface UserData {
+interface UserData {
   in_wantlist: boolean;
   in_collection: boolean;
 }
 
-export interface Community {
+interface Community {
   want: number;
   have: number;
 }
